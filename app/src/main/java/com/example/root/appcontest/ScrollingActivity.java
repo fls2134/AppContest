@@ -12,12 +12,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.example.root.appcontest.Item;
 
 import java.util.ArrayList;
@@ -62,7 +66,6 @@ public class ScrollingActivity extends AppCompatActivity {
         items.add(new Item(R.drawable.hubble_ultra_deep_field, "hubble"));
 
         layoutManager = new LinearLayoutManager(this);
-        //layoutManager = new GridLayoutManager(this,3);
 
         recyclerView.setLayoutManager(layoutManager);
 
@@ -70,8 +73,33 @@ public class ScrollingActivity extends AppCompatActivity {
         recyclerView.setAdapter(Adapter);
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_scrolling, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            Toast.makeText(getApplicationContext(), "환경설정 버튼 클릭됨",Toast.LENGTH_LONG).show();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
 
+
+/* Adapter for RecyclerView */
 class MyAdpater extends RecyclerView.Adapter<MyAdpater.ViewHolder> {
     private Context context;
     private ArrayList<Item> mItems;
