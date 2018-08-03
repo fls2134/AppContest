@@ -4,8 +4,8 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,14 +18,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    final int MY_PERMISSIONS_REQUEST_CUR_PLACE = 3;
+    Intent mapsintent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        /*Intents*/
+        mapsintent = new Intent(MainActivity.this, MapsActivity.class);
+
         /* content view */
         ImageButton newsfeed = (ImageButton)findViewById(R.id.imageButton);
         newsfeed.setOnClickListener(new View.OnClickListener() {
@@ -35,6 +42,9 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent);
             }
         });
+
+        Intent serviceIntent = new Intent(MainActivity.this, AlertService.class);
+        startService(serviceIntent);
 
         /* tool bar */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -56,20 +66,48 @@ public class MainActivity extends AppCompatActivity
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /* permission check required here
                 int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest, Manifest.permission.ACCESS_FINE_LOCATION);
                 if(permissionCheck == PackageManager.PERMISSION_DENIED)
                 {
 
+
+                }
+                */
+
+                int permissionCheck = ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION);
+                if(permissionCheck != PackageManager.PERMISSION_GRANTED)
+                {
+                    ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSIONS_REQUEST_CUR_PLACE);
+                    //if(ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION))
                 }
                 else
                 {
-
+                    if(permissionCheck == PackageManager.PERMISSION_GRANTED)
+                        startActivity(mapsintent);
+                    else
+                        Toast.makeText(MainActivity.this, "위치 권한이 없어서 지도를 표시할 수 없습니다.", Toast.LENGTH_SHORT).show();
                 }
 
-                Intent mapsIntent = new Intent(MainActivity.this, MapsActivity.class);
-                startActivity(mapsIntent);
+
             }
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode)
+        {
+            case MY_PERMISSIONS_REQUEST_CUR_PLACE:
+            {
+                if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    startActivity(mapsintent);
+                else
+                    Toast.makeText(MainActivity.this, "위치 권한이 없으면 지도를 표시할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+        }
     }
 
     @Override

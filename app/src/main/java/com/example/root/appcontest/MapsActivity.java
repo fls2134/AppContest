@@ -53,22 +53,12 @@ public class MapsActivity extends NMapActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
-        if(permissionCheck != PackageManager.PERMISSION_GRANTED)
-        {
-            if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION))
-                ;//
-            else
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_PERMISSON_REQUEST_FINE_LOCATION);
-
-
-        }
-
-
 
         mMapView = new NMapView(this);
+        mMapContainerView = new MapContainerView(this);
+        mMapContainerView.addView(mMapView);
+        setContentView(mMapContainerView);
         mMapView.setClientId(CLIENT_ID);
-        setContentView(mMapView);
         mMapView.setClickable(true);
         mMapView.setEnabled(true);
         mMapView.setFocusable(true);
@@ -84,11 +74,11 @@ public class MapsActivity extends NMapActivity {
         nMapController = mMapView.getMapController();
         nMapResourceProvider = new ResProvider(this);
 
-        //nMapResourceProvider = new NMapResourceProvider
         nMapOverlayManager = new NMapOverlayManager(this,mMapView,nMapResourceProvider);
         myLocationOverlay = nMapOverlayManager.createMyLocationOverlay(locationManager, compassManager);
 
         testPOIdataOverlay();
+        //startMyLocation(); 현재위치 방향까지 같이 표시
 
     }
     private void testPOIdataOverlay() {
