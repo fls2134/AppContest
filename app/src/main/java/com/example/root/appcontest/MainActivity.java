@@ -3,6 +3,7 @@ package com.example.root.appcontest;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         /* maps activity button */
-        Button mapsButton = (Button) findViewById(R.id.button2);
+        ImageButton mapsButton = (ImageButton) findViewById(R.id.gpsButton);
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

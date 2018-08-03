@@ -90,7 +90,6 @@ public class MapsActivity extends NMapActivity {
         NMapPOIdata poiData = new NMapPOIdata(2, nMapResourceProvider);
         poiData.beginPOIdata(2);
         NMapPOIitem item = poiData.addPOIitem(126.95976602854101, 37.49470439862809, "Pizza 777-111", markerId, 0);
-        item.setRightAccessory(true, NMapPOIflagType.CLICKABLE_ARROW);
         poiData.addPOIitem(127.061, 37.51, "Pizza 123-456", markerId, 0);
 
 
