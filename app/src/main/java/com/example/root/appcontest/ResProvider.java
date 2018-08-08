@@ -360,7 +360,7 @@ public class ResProvider extends NMapResourceProvider implements NMapCalloutCust
             NMapPOIitem poiItem = (NMapPOIitem)item;
 
             if (poiItem.showRightButton()) {
-                return "jobs done";
+                return "설정";
             }
         }
 

@@ -65,7 +65,8 @@ public class GetLocationActivity extends NMapActivity{
             public void onReverseGeocoderResponse(NMapPlacemark nMapPlacemark, NMapError nMapError) {
                 if (nMapError != null)
                 {
-                    addr="failed to find address";
+                    addr="주소를 찾을수 없습니다";
+                    item.setTitle(addr);
                 }
                 addr = nMapPlacemark.toString();
                 item.setTitle(addr);
@@ -126,11 +127,23 @@ public class GetLocationActivity extends NMapActivity{
                                 findPlacemarkAtLocation(point.longitude, point.latitude);
                             }
                         });
+                        poiDataOverlay.setOnStateChangeListener(new NMapPOIdataOverlay.OnStateChangeListener() {
+                            @Override
+                            public void onFocusChanged(NMapPOIdataOverlay nMapPOIdataOverlay, NMapPOIitem nMapPOIitem) {
+
+                            }
+
+                            @Override
+                            public void onCalloutClick(NMapPOIdataOverlay nMapPOIdataOverlay, NMapPOIitem nMapPOIitem) {
+                                NGeoPoint point = nMapPOIitem.getPoint();
+                                Log.d("test", "onCalloutClick: " + point.toString());
+
+                            }
+                        });
                     }
                 }
 
             }
         });
-        //Geocoder
     }
 }
