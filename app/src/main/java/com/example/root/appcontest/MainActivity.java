@@ -2,8 +2,7 @@ package com.example.root.appcontest;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,18 +13,24 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
+
+import static com.example.root.appcontest.R.id.nav_header_login;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private int isLogin = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        /* content view */
-        ImageButton newsfeed = (ImageButton)findViewById(R.id.newsfeedButton);
+
+        /**
+         *  button for move to newsfeed activity
+         */
+        Button newsfeed = (Button)findViewById(R.id.newsfeedButton);
         newsfeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -34,20 +39,35 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        /* tool bar */
+        /**
+         *  setting tool bar
+         */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /* drawer layout */
+        /**
+         * add drawer this activity
+         */
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        /* navigation view */
+        /**
+         * navigation view controll
+         */
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View nav_header;
+
+        if(isLogin == 0) {
+            navigationView.inflateHeaderView(R.layout.nav_header_login);
+        }
+        else {
+            navigationView.inflateHeaderView(R.layout.nav_header_info);
+        }
     }
 
     @Override

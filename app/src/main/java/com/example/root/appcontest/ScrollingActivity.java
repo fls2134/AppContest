@@ -27,11 +27,17 @@ import com.example.root.appcontest.Item;
 import java.util.ArrayList;
 
 public class ScrollingActivity extends AppCompatActivity {
+    /**
+     * for get application's context
+     */
     Context mContext;
-
     RecyclerView recyclerView;
     RecyclerView.Adapter Adapter;
     RecyclerView.LayoutManager layoutManager;
+    /**
+     * list of cardview items
+     */
+    ArrayList items = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,17 +60,6 @@ public class ScrollingActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
 
-        ArrayList items = new ArrayList<>();
-
-        items.add(new Item(R.drawable.hubble_ultra_deep_field, "hubble"));
-        items.add(new Item(R.drawable.hubble_ultra_deep_field, "hubble"));
-        items.add(new Item(R.drawable.hubble_ultra_deep_field, "hubble"));
-        items.add(new Item(R.drawable.hubble_ultra_deep_field, "hubble"));
-        items.add(new Item(R.drawable.hubble_ultra_deep_field, "hubble"));
-        items.add(new Item(R.drawable.hubble_ultra_deep_field, "hubble"));
-        items.add(new Item(R.drawable.hubble_ultra_deep_field, "hubble"));
-        items.add(new Item(R.drawable.hubble_ultra_deep_field, "hubble"));
-
         layoutManager = new LinearLayoutManager(this);
 
         recyclerView.setLayoutManager(layoutManager);
@@ -73,6 +68,8 @@ public class ScrollingActivity extends AppCompatActivity {
         recyclerView.setAdapter(Adapter);
 
     }
+
+    public void cardViewItemAdd(int image, String imgtitle) {   items.add(new Item(image, imgtitle));   }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,7 +96,9 @@ public class ScrollingActivity extends AppCompatActivity {
 }
 
 
-/* Adapter for RecyclerView */
+/**
+ * Adapter of recyclerview
+ */
 class MyAdpater extends RecyclerView.Adapter<MyAdpater.ViewHolder> {
     private Context context;
     private ArrayList<Item> mItems;
@@ -122,7 +121,6 @@ class MyAdpater extends RecyclerView.Adapter<MyAdpater.ViewHolder> {
 
         holder.imageView.setImageResource(mItems.get(position).image);
         holder.textView.setText(mItems.get(position).imagetitle);
-        setAnimation(holder.imageView, position);
     }
 
     @Override public int getItemCount() {
@@ -131,17 +129,12 @@ class MyAdpater extends RecyclerView.Adapter<MyAdpater.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public ImageView imageView;
-        public TextView textView; public ViewHolder(View view) {
+        public TextView textView;
+        public ViewHolder(View view) {
             super(view);
             imageView = (ImageView) view.findViewById(R.id.cardimage);
             textView = (TextView) view.findViewById(R.id.cardtext);
         }
     }
 
-    private void setAnimation(View viewToAnimate, int position) {
-        if (position > lastPosition) {
-            Animation animation = AnimationUtils.loadAnimation(context, android.R.anim.slide_in_left);
-            viewToAnimate.startAnimation(animation); lastPosition = position;
-        }
-    }
 }
