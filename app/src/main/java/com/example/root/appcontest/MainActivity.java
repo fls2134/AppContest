@@ -3,7 +3,6 @@ package com.example.root.appcontest;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -17,25 +16,38 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
+
+import static com.example.root.appcontest.R.id.nav_header_login;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     final int MY_PERMISSIONS_REQUEST_CUR_PLACE = 3;
     Intent mapsintent;
+    private int isLogin = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        setTitle("이벤트");
+
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(getResources().getColor(R.color.statusbarColor));
 
         /*Intents*/
         mapsintent = new Intent(MainActivity.this, MapsActivity.class);
 
-        /* content view */
-        ImageButton newsfeed = (ImageButton)findViewById(R.id.newsfeedButton);
+        /**
+         *  button for move to newsfeed activity
+         */
+        Button newsfeed = (Button)findViewById(R.id.newsfeedButton);
         newsfeed.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -47,23 +59,36 @@ public class MainActivity extends AppCompatActivity
         Intent serviceIntent = new Intent(MainActivity.this, AlertService.class);
         startService(serviceIntent);
 
-        /* tool bar */
+        /**
+         *  setting tool bar
+         */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /* drawer layout */
+        /**
+         * add drawer this activity
+         */
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        /* navigation view */
+        /**
+         * navigation view controll
+         */
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        if(isLogin == 0) {
+            navigationView.inflateHeaderView(R.layout.nav_header_login);
+        }
+        else {
+            navigationView.inflateHeaderView(R.layout.nav_header_info);
+        }
+
 
         /* maps activity button */
-        ImageButton mapsButton = (ImageButton) findViewById(R.id.gpsButton);
+        Button mapsButton = (Button) findViewById(R.id.gpsButton);
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
