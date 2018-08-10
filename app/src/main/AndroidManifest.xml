@@ -35,12 +35,13 @@
             android:name=".ScrollingActivity"
             android:label="@string/title_activity_scrolling"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".MapsActivity" />
 
         <service android:name=".AlertService" />
 
-        <activity android:name=".GetLocationActivity"></activity>
+        <activity android:name=".GetLocationActivity" />
+        <activity android:name=".AddActivity"></activity>
     </application>
 
 </manifest>

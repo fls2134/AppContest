@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +15,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.nhn.android.maps.NMapActivity;
@@ -58,10 +61,11 @@ public class MapsActivity extends NMapActivity {
         mMapView = new NMapView(this);
         mMapContainerView = new MapContainerView(this);
         mMapContainerView.addView(mMapView);
-        LayoutInflater vi = getLayoutInflater();
+        LayoutInflater vi = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v = vi.inflate(R.layout.test,null);
-        mMapContainerView.addView(v);
-        v.setOnClickListener(new View.OnClickListener() {
+        mMapView.addView(v);
+        ImageButton compass = v.findViewById(R.id.compass);
+        compass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startMyLocation();
@@ -69,6 +73,7 @@ public class MapsActivity extends NMapActivity {
         });
 
         setContentView(mMapContainerView);
+
         mMapView.setClientId(CLIENT_ID);
         mMapView.setClickable(true);
         mMapView.setEnabled(true);
