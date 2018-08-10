@@ -59,7 +59,7 @@ public class AlertService extends Service {
         public void handleMessage(Message msg) {
             Intent intent = new Intent(AlertService.this, MainActivity.class);
             PendingIntent pendingIntent = PendingIntent.getActivity(AlertService.this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-
+            /*
             NotificationChannel notificationChannel = new NotificationChannel("sibal", "sibal", NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.enableVibration(true);
             notify_m.createNotificationChannel(notificationChannel);
@@ -73,7 +73,7 @@ public class AlertService extends Service {
                     .build();
 
             notifi.defaults = Notification.DEFAULT_VIBRATE;
-
+            */
 
             //notify_m.notify(0, notifi);
             //Toast.makeText(AlertService.this, "되라고 씨발", Toast.LENGTH_SHORT).show();

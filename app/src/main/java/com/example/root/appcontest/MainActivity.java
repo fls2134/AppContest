@@ -3,7 +3,6 @@ package com.example.root.appcontest;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -20,7 +19,6 @@ import android.view.MenuItem;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import static com.example.root.appcontest.R.id.nav_header_login;
@@ -29,8 +27,8 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     final int MY_PERMISSIONS_REQUEST_CUR_PLACE = 3;
     Intent mapsintent;
-
     private int isLogin = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +79,6 @@ public class MainActivity extends AppCompatActivity
          */
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        View nav_header;
         if(isLogin == 0) {
             navigationView.inflateHeaderView(R.layout.nav_header_login);
         }
@@ -89,8 +86,9 @@ public class MainActivity extends AppCompatActivity
             navigationView.inflateHeaderView(R.layout.nav_header_info);
         }
 
+
         /* maps activity button */
-        ImageButton mapsButton = (ImageButton) findViewById(R.id.gpsButton);
+        Button mapsButton = (Button) findViewById(R.id.gpsButton);
         mapsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
