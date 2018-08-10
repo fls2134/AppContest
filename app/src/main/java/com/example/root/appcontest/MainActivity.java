@@ -75,6 +75,18 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         /**
+         * login controll
+         */
+        Button loginButton = (Button)findViewById(R.id.nav_loginbtn);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Intent intent = new Intent(MainActivity.this, "somewhere to go");
+                //startActivity(intent);
+            }
+        });
+
+        /**
          * navigation view controll
          */
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -85,7 +97,6 @@ public class MainActivity extends AppCompatActivity
         else {
             navigationView.inflateHeaderView(R.layout.nav_header_info);
         }
-
 
         /* maps activity button */
         Button mapsButton = (Button) findViewById(R.id.gpsButton);
