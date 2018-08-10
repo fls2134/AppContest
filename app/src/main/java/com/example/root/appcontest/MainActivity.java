@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity
         window.setStatusBarColor(getResources().getColor(R.color.statusbarColor));
 
         /*Intents*/
-        mapsintent = new Intent(MainActivity.this, MapsActivity.class);
+        mapsintent = new Intent(MainActivity.this, Test.class);
 
         /**
          *  button for move to newsfeed activity

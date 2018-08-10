@@ -143,14 +143,8 @@ public class AddActivity extends AppCompatActivity {
     {
         String imagePath = imguri.getPath();
         ExifInterface exif = null;
-        try{
-            exif = new ExifInterface(imagePath);
-        } catch (IOException e)
-        {
-            e.printStackTrace();
-        }
 
-        Bitmap bitmap =
+        //Bitmap bitmap =
 
     }
 }
