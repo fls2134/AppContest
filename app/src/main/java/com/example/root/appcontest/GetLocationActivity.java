@@ -1,5 +1,7 @@
 package com.example.root.appcontest;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v7.app.AppCompatActivity;
@@ -100,7 +102,7 @@ public class GetLocationActivity extends NMapActivity{
                         int marker1 = NMapPOIflagType.PIN;
 
                         // set POI data
-                        NMapPOIdata poiData = new NMapPOIdata(1, nMapResourceProvider);
+                        final NMapPOIdata poiData = new NMapPOIdata(1, nMapResourceProvider);
 
                         poiData.beginPOIdata(1);
 
@@ -136,7 +138,14 @@ public class GetLocationActivity extends NMapActivity{
                             @Override
                             public void onCalloutClick(NMapPOIdataOverlay nMapPOIdataOverlay, NMapPOIitem nMapPOIitem) {
                                 NGeoPoint point = nMapPOIitem.getPoint();
-                                Log.d("test", "onCalloutClick: " + point.toString());
+                                longitude = point.longitude;
+                                latitude = point.latitude;
+                                Intent resultIntent = new Intent();
+                                resultIntent.putExtra("longitude", longitude);
+                                resultIntent.putExtra("latitude", latitude);
+                                resultIntent.putExtra("addr", addr);
+                                setResult(Activity.RESULT_OK, resultIntent);
+                                finish();
 
                             }
                         });
