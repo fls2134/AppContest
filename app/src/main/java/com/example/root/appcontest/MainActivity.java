@@ -5,7 +5,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
-import android.support.v7.widget.Toolbar;
 
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
@@ -45,6 +44,18 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.tab_location:
                         fragmentTransaction.replace(R.id.action_container,
                                 new MapFragment()).commit();
+                        break;
+                    case R.id.tab_my:
+                        LocalInfoControl localInfoControl = new LocalInfoControl();
+                        if(localInfoControl.isLocalInfoExist()) {
+                            // 로컬 정보가 있을 때
+
+                        }
+                        else {
+                            // 로컬 정보가 없을 때
+                            fragmentTransaction.replace(R.id.action_container,
+                                    new LogInFragment()).commit();
+                        }
                         break;
                 }
             }
