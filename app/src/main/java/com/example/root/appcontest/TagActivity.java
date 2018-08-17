@@ -58,12 +58,22 @@ public class TagActivity extends AppCompatActivity implements View.OnClickListen
 
         flexboxLayout_tags = findViewById(R.id.flexbox_layout_tags);
         flexboxLayout_res = findViewById(R.id.flexbox_layout_res);
-        for (int i = 0; i < strings.length; i++) {
-            TagButton button = new TagButton(getApplicationContext());
-            button.setText(strings[i]);
-            button.setOnClickListener(this);
-            flexboxLayout_tags.addView(button);
+        if(strings == null)
+        {
+            strings = new String[5];
+            strings[0] = "카테고리를";
+            strings[1] = "고르지 않아";
+            strings[2] = "기본 태그가";
+            strings[3] = "없습니다";
+            strings[4] = "직접 추가해 주세요";
         }
+        else
+            for (int i = 0; i < strings.length; i++) {
+                TagButton button = new TagButton(getApplicationContext());
+                button.setText(strings[i]);
+                button.setOnClickListener(this);
+                flexboxLayout_tags.addView(button);
+            }
 
     }
 
@@ -90,6 +100,7 @@ public class TagActivity extends AppCompatActivity implements View.OnClickListen
     public void Add_Tag(View v)
     {
         String tag = tag_text.getText().toString();
+        tag_text.setText("");
         tags.add(tag);
         TagButton button = new TagButton(getApplicationContext());
         button.setText(tag);
