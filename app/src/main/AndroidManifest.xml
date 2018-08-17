@@ -44,7 +44,8 @@
 
         <activity android:name=".GetLocationActivity" />
         <activity android:name=".AddActivity" />
-        <activity android:name=".Test"></activity>
+        <activity android:name=".Test" />
+        <activity android:name=".TagActivity"></activity>
     </application>
 
 </manifest>

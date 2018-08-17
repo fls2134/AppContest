@@ -9,6 +9,7 @@ import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -57,6 +58,7 @@ public class AddActivity extends AppCompatActivity {
     EditText editText_tag;
     ImageView imageView;
     Button locationButton;
+    Button tagButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +70,7 @@ public class AddActivity extends AppCompatActivity {
         editText_link = findViewById(R.id.link_add);
         imageView = findViewById(R.id.imageAdd);
         locationButton= findViewById(R.id.location_add);
+        tagButton = findViewById(R.id.tag_add);
 
     }
     public void OneRadioButtonClicked(View v)
@@ -119,6 +122,8 @@ public class AddActivity extends AppCompatActivity {
         //latitude
         //tag
 
+        //서버에 다올리고 난뒤
+        finish();
     }
     public void onClickImage(View v)// 카메라나 여러개 이미지 업로드 여부도 생각해보자.
     {
@@ -160,6 +165,14 @@ public class AddActivity extends AppCompatActivity {
         }
 
     }
+
+    public void onClickTag(View v)
+    {
+        Intent intent = new Intent(getApplicationContext(), TagActivity.class);
+        startActivityForResult(intent, TAG_CODE);
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -179,7 +192,9 @@ public class AddActivity extends AppCompatActivity {
                     locationButton.setBackgroundColor(0);
                     break;
                 case TAG_CODE:
-                    ;
+                    tag = data.getStringExtra("tag");
+                    tagButton.setText(tag);
+                    tagButton.setBackgroundColor(0);
                     break;
             }
         }
