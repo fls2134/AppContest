@@ -39,13 +39,15 @@ public class AddActivity extends AppCompatActivity {
     final int GALLERY_CODE = 1112;
     final int LOCATION_CDDE = 1113;
     final int TAG_CODE = 1114;
-    //datas will be sent to server db
+
+    //서버에 올릴 정보들
     String title;
     String content;
     String link;
     String tag;
     Bitmap img;
     int type;
+    //여기까지
 
     double longitude;
     double latitude;
@@ -64,6 +66,7 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
+        type = -1; // 선택 안된 상태
         rg = findViewById(R.id.type_group);
         editText_title = findViewById(R.id.title_add);
         editText_content = findViewById(R.id.content_add);
@@ -115,12 +118,15 @@ public class AddActivity extends AppCompatActivity {
     }
     public void onClickComplete(View v)
     {
-        title = editText_title.getText().toString();
-        content = editText_content.getText().toString();
-        link = editText_link.getText().toString();
-        //longitude
-        //latitude
-        //tag
+        title = editText_title.getText().toString(); //String
+        content = editText_content.getText().toString(); // String
+        link = editText_link.getText().toString(); // String
+        //type (final 변수들 참조) // int
+        //longitude => 설정하면 값 할당 되있음 double
+        //latitude => 이하 동문 double
+        //tag =>설정하면 값 할당 되있음 String
+        //img =>설정하면 값 할당 되있음 Bitmap
+        //그외 id 같은것들 추가 해야 할것들 있으면 하셈
 
         //서버에 다올리고 난뒤
         finish();
@@ -143,7 +149,7 @@ public class AddActivity extends AppCompatActivity {
                 startActivityForResult(intent,GALLERY_CODE);
             }
             else
-                Toast.makeText(AddActivity.this, "읽기 권한이 없어서 지도를 표시할 수 없습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddActivity.this, "저장소 권한이 없어 이미지를 불러올 수 없습니다.", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -169,6 +175,27 @@ public class AddActivity extends AppCompatActivity {
     public void onClickTag(View v)
     {
         Intent intent = new Intent(getApplicationContext(), TagActivity.class);
+        int init_tags;
+        switch (type)
+        {
+            case TYPE_CONCERT:
+            case TYPE_MUSICAL:
+            case TYPE_PLAY:
+            case TYPE_GALLERY:
+            case TYPE_PARTY:
+                init_tags = 1;
+                break;
+            case TYPE_FOOD:
+            case TYPE_BAR:
+                init_tags = 2;
+                break;
+            case TYPE_EVENT:
+                init_tags = 3;
+                break;
+            default:
+                init_tags = 0;
+        }
+        intent.putExtra("init_tags", init_tags);
         startActivityForResult(intent, TAG_CODE);
     }
 
@@ -212,17 +239,16 @@ public class AddActivity extends AppCompatActivity {
         }
         int exifOrientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
         int exifDegree = exifOrientationToDegrees(exifOrientation);
-        Bitmap bitmap;
         BitmapFactory.Options options;
         try{
-            bitmap = BitmapFactory.decodeFile(imagePath);
+            img = BitmapFactory.decodeFile(imagePath);
         }catch (OutOfMemoryError e)
         {
             options = new BitmapFactory.Options();
             options.inSampleSize = 2;
-            bitmap = BitmapFactory.decodeFile(imagePath, options);
+            img = BitmapFactory.decodeFile(imagePath, options);
         }
-        imageView.setImageBitmap(bitmap);
+        imageView.setImageBitmap(img);
     }
     private int exifOrientationToDegrees(int exifOrientation) {
         if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {

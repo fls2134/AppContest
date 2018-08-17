@@ -21,6 +21,10 @@ import java.util.ArrayList;
 
 public class TagActivity extends AppCompatActivity implements View.OnClickListener{
 
+    final int TAGS_CONCERT = 1;
+    final int TAGS_RESTAURANT = 2;
+    final int TAGS_EVENT = 3;
+
     ArrayList<String> tags = new ArrayList<>();
     FlexboxLayout flexboxLayout_tags;
     FlexboxLayout flexboxLayout_res;
@@ -30,8 +34,24 @@ public class TagActivity extends AppCompatActivity implements View.OnClickListen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tag);
 
+        Intent intent = getIntent();
+        int init_tags = intent.getIntExtra("init_tags", 0);
         tag_text = findViewById(R.id.tag_text);
-        String[] strings = getResources().getStringArray(R.array.rest_tags);
+        String[] strings;
+        switch (init_tags)
+        {
+            case TAGS_CONCERT:
+                strings = getResources().getStringArray(R.array.con_tags);
+                break;
+            case TAGS_RESTAURANT:
+                strings = getResources().getStringArray(R.array.rest_tags);
+                break;
+            case TAGS_EVENT:
+                strings = getResources().getStringArray(R.array.event_tags);
+                break;
+            default:
+                strings = null;
+        }
 
         ActionBar actionBar = getSupportActionBar();
         actionBar.setTitle("태그 설정");
