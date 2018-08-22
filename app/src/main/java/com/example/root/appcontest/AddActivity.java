@@ -1,6 +1,8 @@
 package com.example.root.appcontest;
 
 import android.Manifest;
+import android.app.DatePickerDialog;
+import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -8,6 +10,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -16,12 +19,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioGroup;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.Calendar;
+import java.util.Date;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -47,11 +54,16 @@ public class AddActivity extends AppCompatActivity {
     String tag;
     Bitmap img;
     int type;
-    //여기까지
+
+    int sYear, sMonth, sDay, sHour, sMin;
+    int eYear, eMonth, eDay, eHour, eMin;
 
     double longitude;
     double latitude;
+    //여기까지
     String addr;
+
+
 
     RadioGroup rg;
     EditText editText_title;
@@ -61,6 +73,8 @@ public class AddActivity extends AppCompatActivity {
     ImageView imageView;
     Button locationButton;
     Button tagButton;
+    Button timeStartButton;
+    Button timeEndButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,10 +84,13 @@ public class AddActivity extends AppCompatActivity {
         rg = findViewById(R.id.type_group);
         editText_title = findViewById(R.id.title_add);
         editText_content = findViewById(R.id.content_add);
-        editText_link = findViewById(R.id.link_add);
         imageView = findViewById(R.id.imageAdd);
         locationButton= findViewById(R.id.location_add);
         tagButton = findViewById(R.id.tag_add);
+        timeStartButton = findViewById(R.id.time_start);
+        timeEndButton = findViewById(R.id.time_end);
+
+
 
     }
     public void OneRadioButtonClicked(View v)
@@ -120,13 +137,16 @@ public class AddActivity extends AppCompatActivity {
     {
         title = editText_title.getText().toString(); //String
         content = editText_content.getText().toString(); // String
-        link = editText_link.getText().toString(); // String
         //type (final 변수들 참조) // int
         //longitude => 설정하면 값 할당 되있음 double
         //latitude => 이하 동문 double
         //tag =>설정하면 값 할당 되있음 String
         //img =>설정하면 값 할당 되있음 Bitmap
         //그외 id 같은것들 추가 해야 할것들 있으면 하셈
+
+        //int sYear, sMonth, sDay, sHour, sMin; 시작 날짜 & 시간
+        //int eYear, eMonth, eDay, eHour, eMin; 시작 날짜 & 시간
+        Toast.makeText(this, "sibla" + sYear + sMonth + sDay + sHour + sMin + '\n' + eYear + eMonth + eDay + eHour + eMin , Toast.LENGTH_SHORT).show();
 
         //서버에 다올리고 난뒤
         finish();
@@ -170,6 +190,53 @@ public class AddActivity extends AppCompatActivity {
                 Toast.makeText(AddActivity.this, "위치 권한이 없어서 지도를 표시할 수 없습니다.", Toast.LENGTH_SHORT).show();
         }
 
+    }
+    public void onClickTime(final View v)
+    {
+        final Calendar cal = Calendar.getInstance();
+        String msg;
+
+        final TimePickerDialog time_dialog = new TimePickerDialog(AddActivity.this, new TimePickerDialog.OnTimeSetListener() {
+            @Override
+            public void onTimeSet(TimePicker timePicker, int hour, int min) {
+                ((Button)v).setText(((Button) v).getText() + String.format("%d:%d", hour, min));
+                if(v.equals(timeStartButton))
+                {
+                    sHour = hour;
+                    sMin = min;
+                }
+                else
+                {
+                    eHour = hour;
+                    eMin = min;
+                }
+                v.setBackgroundColor(255);
+            }
+        }, cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true);  //마지막 boolean 값은 시간을 24시간으로 보일지 아닐지
+
+
+        DatePickerDialog date_dialog = new DatePickerDialog(AddActivity.this, new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int date) {
+                ((Button)v).setText(String.format("%d/%d/%d ", year, month+1, date));
+                if(v.equals(timeStartButton))
+                {
+                    sYear = year;
+                    sMonth = month+1;
+                    sDay = date;
+                }
+                else
+                {
+                    eYear = year;
+                    eMonth = month+1;
+                    eDay = date;
+                }
+                time_dialog.show();
+            }
+        }, cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE));
+
+
+        date_dialog.show();
     }
 
     public void onClickTag(View v)

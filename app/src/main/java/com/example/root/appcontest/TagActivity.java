@@ -6,14 +6,11 @@ import android.graphics.Color;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.android.flexbox.FlexboxLayout;
 
@@ -67,13 +64,12 @@ public class TagActivity extends AppCompatActivity implements View.OnClickListen
             strings[3] = "없습니다";
             strings[4] = "직접 추가해 주세요";
         }
-        else
-            for (int i = 0; i < strings.length; i++) {
-                TagButton button = new TagButton(getApplicationContext());
-                button.setText(strings[i]);
-                button.setOnClickListener(this);
-                flexboxLayout_tags.addView(button);
-            }
+        for (int i = 0; i < strings.length; i++) {
+            TagButton button = new TagButton(getApplicationContext());
+            button.setText(strings[i]);
+            button.setOnClickListener(this);
+            flexboxLayout_tags.addView(button);
+        }
 
     }
 
