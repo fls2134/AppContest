@@ -55,9 +55,9 @@
             android:id="@+id/flexbox_layout_res"
             app:alignContent="flex_start"
             app:alignItems="flex_start"
-            app:dividerDrawable="@drawable/divider"
             app:flexWrap="wrap"
             app:showDivider="beginning|middle"
+            app:dividerDrawable="@drawable/divider"
             >
 
         </com.google.android.flexbox.FlexboxLayout>
