@@ -9,11 +9,13 @@ import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,7 +23,17 @@ import android.widget.ImageView;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
 import java.io.IOException;
+
+import static com.nhn.android.data.g.d;
 
 public class AddActivity extends AppCompatActivity {
 
@@ -61,10 +73,18 @@ public class AddActivity extends AppCompatActivity {
     ImageView imageView;
     Button locationButton;
     Button tagButton;
+
+    FirebaseDatabase database;
+
+    StorageReference mStorageRef;
+    Uri myUrl;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+
+        database = FirebaseDatabase.getInstance();
 
         type = -1; // 선택 안된 상태
         rg = findViewById(R.id.type_group);
@@ -127,12 +147,37 @@ public class AddActivity extends AppCompatActivity {
         //tag =>설정하면 값 할당 되있음 String
         //img =>설정하면 값 할당 되있음 Bitmap
         //그외 id 같은것들 추가 해야 할것들 있으면 하셈
-
+        final DataObj dataObj = new DataObj();
+        dataObj.type  = type;
+        dataObj.longtitude = longitude;
+        dataObj.latitude = latitude;
+        dataObj.title = title;
+        dataObj.content = content;
+        dataObj.link = link;
+        dataObj.tag = tag;
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+        StorageReference riversRef = mStorageRef.child(title+".jpg");
+        riversRef.putFile(myUrl).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                dataObj.img_url = downloadUrl.toString();
+                database.getReference().child("Local_info").child(dataObj.title).setValue(dataObj);
+                Toast.makeText(AddActivity.this,downloadUrl.toString(),Toast.LENGTH_SHORT).show();
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(AddActivity.this,"" +
+                        "!!!이미지 업로드 실패!!!",Toast.LENGTH_LONG).show();
+            }
+        });
         //서버에 다올리고 난뒤
         finish();
     }
     public void onClickImage(View v)// 카메라나 여러개 이미지 업로드 여부도 생각해보자.
     {
+
         int permissionCheck = ContextCompat.checkSelfPermission(AddActivity.this, Manifest.permission.READ_EXTERNAL_STORAGE);
         if(permissionCheck != PackageManager.PERMISSION_GRANTED)
         {
@@ -229,6 +274,8 @@ public class AddActivity extends AppCompatActivity {
     private void sendPicture(Uri imguri)
     {
         String imagePath = getRealPathFromURI(imguri);
+//        myUri = Uri.parse(imagePath);
+        myUrl = imguri;
         ExifInterface exif = null;
         try {
             exif = new ExifInterface(imagePath);
