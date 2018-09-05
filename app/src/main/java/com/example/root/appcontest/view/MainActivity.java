@@ -1,4 +1,4 @@
-package com.example.root.appcontest;
+package com.example.root.appcontest.view;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.example.root.appcontest.R;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
 
@@ -19,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(getResources().getColor(R.color.statusbarColor));
+        window.setStatusBarColor(getResources().getColor(R.color.themeColor));
 
         // 최초 화면 설정
         FragmentTransaction fragmentTransaction
@@ -46,16 +47,8 @@ public class MainActivity extends AppCompatActivity {
                                 new MapFragment()).commit();
                         break;
                     case R.id.tab_my:
-                        LocalInfoControl localInfoControl = new LocalInfoControl();
-                        if(localInfoControl.isLocalInfoExist()) {
-                            // 로컬 정보가 있을 때
-
-                        }
-                        else {
-                            // 로컬 정보가 없을 때
-                            fragmentTransaction.replace(R.id.action_container,
-                                    new LogInFragment()).commit();
-                        }
+                        fragmentTransaction.replace(R.id.action_container,
+                                new MyPageFragment()).commit();
                         break;
                 }
             }

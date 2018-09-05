@@ -1,9 +1,11 @@
-package com.example.root.appcontest;
+package com.example.root.appcontest.view;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+
+import com.example.root.appcontest.R;
 
 
 public class Intro extends Activity {

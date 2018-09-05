@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="statusbarColor">#231043</color>
-    <color name="lightStatusbarColor">#563c81</color>
+    <color name="themeColor">#070461</color>
+    <color name="backgroundLongin">#263797</color>
     <color name="tabSelectColor">#1f5627</color>
 </resources>
