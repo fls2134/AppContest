@@ -1,6 +1,8 @@
 package com.example.root.appcontest;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -23,6 +25,15 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstance) {
         super.onViewCreated(view, savedInstance);
+        FloatingActionButton writeBtn = view.findViewById(R.id.floatingActionButton_home);
+        writeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent writeIntent = new Intent(getActivity(), WriteActivity.class);
+                startActivity(writeIntent);
+            }
+        });
+
 
         TabLayout mTabs = (TabLayout) view.findViewById(R.id.tabs_home);
         mTabs.addTab(mTabs.newTab().setText("정렬1"));

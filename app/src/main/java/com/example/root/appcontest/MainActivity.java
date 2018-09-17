@@ -37,13 +37,13 @@ public class MainActivity extends AppCompatActivity {
                         = getSupportFragmentManager().beginTransaction();
 
                 switch (tabId) {
-                    case R.id.tab_home:
-                        fragmentTransaction.replace(R.id.action_container,
-                                new HomeFragment()).commit();
-                        break;
                     case R.id.tab_location:
                         fragmentTransaction.replace(R.id.action_container,
                                 new MapFragment()).commit();
+                        break;
+                    case R.id.tab_home:
+                        fragmentTransaction.replace(R.id.action_container,
+                                new HomeFragment()).commit();
                         break;
                     case R.id.tab_my:
                         LocalInfoControl localInfoControl = new LocalInfoControl();
